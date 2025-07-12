@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Welcome from './Welcome';
 import Section1 from './Section1';
 import Section2 from './Section2';
 import Section3 from './Section3';
@@ -8,11 +9,11 @@ import SectionFinal from './SectionFinal';
 import SectionComplete from './SectionComplete';
 
 const OnboardingContainer = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
 
   const handleNext = (sectionAnswers) => {
-    setAnswers(prev => ({ ...prev, ...sectionAnswers }));
+    if (sectionAnswers) setAnswers(prev => ({ ...prev, ...sectionAnswers }));
     setStep(step + 1);
   };
 
@@ -21,7 +22,7 @@ const OnboardingContainer = () => {
   };
 
   const handleRestart = () => {
-    setStep(1);
+    setStep(0);
     setAnswers({});
   };
 
@@ -34,6 +35,9 @@ const OnboardingContainer = () => {
       justifyContent: 'center',
       gap: '2rem'
     }}>
+      {step === 0 && (
+        <Welcome onNext={handleNext} />
+      )}
       {step === 1 && (
         <Section1 onNext={handleNext} />
       )}
