@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { NeumorphicCard, NeumorphicButton } from '../../styles/Neumorphic';
+import { useTheme } from '../../context/ThemeContext';
 
 // Simple confetti animation using canvas
 const ConfettiBlast = () => {
@@ -47,16 +48,40 @@ const ConfettiBlast = () => {
 };
 
 const SectionComplete = ({ onRestart }) => {
+  const { isLightMode } = useTheme();
+
   return (
     <div style={{ position: 'relative', width: '100%' }}>
       <ConfettiBlast />
-      <NeumorphicCard style={{ zIndex: 2, position: 'relative', minWidth: 340, minHeight: 320, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', fontSize: '2rem' }}>🎉 You're All Set! 🎉</h2>
-        <div style={{ color: '#fff', fontSize: '1.2rem', textAlign: 'center', marginBottom: '2.5rem' }}>
-          You’ve completed setting up your AI trading preferences.<br />
+      <NeumorphicCard isLightMode={isLightMode} style={{ 
+        zIndex: 2, 
+        position: 'relative', 
+        minWidth: 340, 
+        minHeight: 320, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}>
+        <h2 style={{ 
+          textAlign: 'center', 
+          marginBottom: '1.5rem', 
+          fontSize: '2rem',
+          color: isLightMode ? '#2c3e50' : '#ffffff'
+        }}>
+          🎉 You're All Set! 🎉
+        </h2>
+        <div style={{ 
+          color: isLightMode ? '#6c757d' : '#ffffff', 
+          fontSize: '1.2rem', 
+          textAlign: 'center', 
+          marginBottom: '2.5rem',
+          lineHeight: '1.6'
+        }}>
+          You've completed setting up your AI trading preferences.<br />
           Get ready to experience smart, automated investing!
         </div>
-        <NeumorphicButton style={{ width: '100%' }} onClick={onRestart}>
+        <NeumorphicButton isLightMode={isLightMode} style={{ width: '100%' }} onClick={onRestart}>
           Go to Dashboard
         </NeumorphicButton>
       </NeumorphicCard>

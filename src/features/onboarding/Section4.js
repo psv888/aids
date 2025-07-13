@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NeumorphicCard, NeumorphicButton, NeumorphicInput } from '../../styles/Neumorphic';
+import { useTheme } from '../../context/ThemeContext';
 
 const budgetPeriods = [
   { label: 'Per day', value: 'day' },
@@ -21,24 +22,26 @@ const Section4 = ({ onNext, onBack }) => {
   const [stopLoss, setStopLoss] = useState('');
   const [stopLossPeriod, setStopLossPeriod] = useState('day');
   const [stopLossEnabled, setStopLossEnabled] = useState('');
+  const { isLightMode } = useTheme();
 
   const handleNext = () => {
     if (onNext) onNext({ capital, budget, budgetPeriod, reinvest, stopLoss, stopLossPeriod, stopLossEnabled });
   };
 
   return (
-    <NeumorphicCard>
+    <NeumorphicCard isLightMode={isLightMode}>
       <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Investment Amounts & Limits</h2>
       <div style={{ width: '100%', marginBottom: '2rem' }}>
         <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: '1rem', textAlign: 'center' }}>
           9. How much total capital do you want to allocate to automated trading?
         </div>
         <NeumorphicInput
+          isLightMode={isLightMode}
           type="number"
           placeholder="$ Amount"
           value={capital}
           onChange={e => setCapital(e.target.value)}
-          style={{ width: '100%', color: '#fff', background: '#23234b' }}
+          style={{ width: '100%' }}
         />
       </div>
       <div style={{ width: '100%', marginBottom: '2rem' }}>
@@ -49,14 +52,10 @@ const Section4 = ({ onNext, onBack }) => {
           {budgetPeriods.map(opt => (
             <NeumorphicButton
               key={opt.value}
+              isLightMode={isLightMode}
+              className={budgetPeriod === opt.value ? 'selected' : ''}
               style={{
-                flex: 1,
-                background: budgetPeriod === opt.value
-                  ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                  : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-                boxShadow: budgetPeriod === opt.value
-                  ? '0 0 16px #3a3aff99'
-                  : undefined
+                flex: 1
               }}
               onClick={() => setBudgetPeriod(opt.value)}
               type="button"
@@ -66,11 +65,12 @@ const Section4 = ({ onNext, onBack }) => {
           ))}
         </div>
         <NeumorphicInput
+          isLightMode={isLightMode}
           type="number"
           placeholder={`$ per ${budgetPeriod || 'period'}`}
           value={budget}
           onChange={e => setBudget(e.target.value)}
-          style={{ width: '100%', color: '#fff', background: '#23234b' }}
+          style={{ width: '100%' }}
           disabled={!budgetPeriod}
         />
       </div>
@@ -80,14 +80,10 @@ const Section4 = ({ onNext, onBack }) => {
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <NeumorphicButton
+            isLightMode={isLightMode}
+            className={reinvest === 'yes' ? 'selected' : ''}
             style={{
-              flex: 1,
-              background: reinvest === 'yes'
-                ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-              boxShadow: reinvest === 'yes'
-                ? '0 0 16px #3a3aff99'
-                : undefined
+              flex: 1
             }}
             onClick={() => setReinvest('yes')}
             type="button"
@@ -95,14 +91,10 @@ const Section4 = ({ onNext, onBack }) => {
             Yes
           </NeumorphicButton>
           <NeumorphicButton
+            isLightMode={isLightMode}
+            className={reinvest === 'no' ? 'selected' : ''}
             style={{
-              flex: 1,
-              background: reinvest === 'no'
-                ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-              boxShadow: reinvest === 'no'
-                ? '0 0 16px #3a3aff99'
-                : undefined
+              flex: 1
             }}
             onClick={() => setReinvest('no')}
             type="button"
@@ -117,14 +109,10 @@ const Section4 = ({ onNext, onBack }) => {
         </div>
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
           <NeumorphicButton
+            isLightMode={isLightMode}
+            className={stopLossEnabled === 'yes' ? 'selected' : ''}
             style={{
-              flex: 1,
-              background: stopLossEnabled === 'yes'
-                ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-              boxShadow: stopLossEnabled === 'yes'
-                ? '0 0 16px #3a3aff99'
-                : undefined
+              flex: 1
             }}
             onClick={() => setStopLossEnabled('yes')}
             type="button"
@@ -132,14 +120,10 @@ const Section4 = ({ onNext, onBack }) => {
             Yes
           </NeumorphicButton>
           <NeumorphicButton
+            isLightMode={isLightMode}
+            className={stopLossEnabled === 'no' ? 'selected' : ''}
             style={{
-              flex: 1,
-              background: stopLossEnabled === 'no'
-                ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-              boxShadow: stopLossEnabled === 'no'
-                ? '0 0 16px #3a3aff99'
-                : undefined
+              flex: 1
             }}
             onClick={() => setStopLossEnabled('no')}
             type="button"
@@ -150,23 +134,20 @@ const Section4 = ({ onNext, onBack }) => {
         {stopLossEnabled === 'yes' && (
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <NeumorphicInput
+              isLightMode={isLightMode}
               type="number"
               placeholder="% Loss"
               value={stopLoss}
               onChange={e => setStopLoss(e.target.value)}
-              style={{ width: '100px', color: '#fff', background: '#23234b' }}
+              style={{ width: '100px' }}
             />
-            <span style={{ color: '#fff', fontWeight: 500 }}>in</span>
+            <span style={{ color: isLightMode ? '#2c3e50' : '#fff', fontWeight: 500 }}>in</span>
             {stopLossPeriods.map(opt => (
               <NeumorphicButton
                 key={opt.value}
+                isLightMode={isLightMode}
+                className={stopLossPeriod === opt.value ? 'selected' : ''}
                 style={{
-                  background: stopLossPeriod === opt.value
-                    ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                    : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-                  boxShadow: stopLossPeriod === opt.value
-                    ? '0 0 16px #3a3aff99'
-                    : undefined,
                   padding: '0.5rem 1rem',
                   fontSize: '1rem',
                   margin: '0 0.25rem'
@@ -181,10 +162,11 @@ const Section4 = ({ onNext, onBack }) => {
         )}
       </div>
       <div style={{ display: 'flex', width: '100%', gap: '1rem', marginTop: '2rem' }}>
-        <NeumorphicButton onClick={onBack} style={{ flex: 1, background: 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)' }}>
+        <NeumorphicButton isLightMode={isLightMode} onClick={onBack} style={{ flex: 1 }}>
           Back
         </NeumorphicButton>
         <NeumorphicButton
+          isLightMode={isLightMode}
           onClick={handleNext}
           style={{ flex: 1 }}
           disabled={!capital || !budget || !budgetPeriod || !reinvest || (stopLossEnabled === 'yes' && !stopLoss)}

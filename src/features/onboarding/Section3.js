@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NeumorphicCard, NeumorphicButton, NeumorphicInput } from '../../styles/Neumorphic';
+import { useTheme } from '../../context/ThemeContext';
 
 const assetOptions = [
   'U.S. stocks',
@@ -27,6 +28,7 @@ const Section3 = ({ onNext, onBack }) => {
   const [sectors, setSectors] = useState([]);
   const [otherSector, setOtherSector] = useState('');
   const [avoid, setAvoid] = useState('');
+  const { isLightMode } = useTheme();
 
   const toggleAsset = (asset) => {
     setAssets((prev) =>
@@ -42,11 +44,11 @@ const Section3 = ({ onNext, onBack }) => {
 
   const handleNext = () => {
     const allSectors = otherSector ? [...sectors, otherSector] : sectors;
-    if (onNext) onNext({ assets, sectors: allSectors, avoid });
+    if (onNext) onNext({ assets, sectors: allSectors, avoid, otherSector });
   };
 
   return (
-    <NeumorphicCard>
+    <NeumorphicCard isLightMode={isLightMode}>
       <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Asset Preferences</h2>
       <div style={{ width: '100%', marginBottom: '2rem' }}>
         <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: '1rem', textAlign: 'center' }}>
@@ -55,15 +57,11 @@ const Section3 = ({ onNext, onBack }) => {
         {assetOptions.map(opt => (
           <NeumorphicButton
             key={opt}
+            isLightMode={isLightMode}
+            className={assets.includes(opt) ? 'selected' : ''}
             style={{
               width: '100%',
-              margin: '0.5rem 0',
-              background: assets.includes(opt)
-                ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-              boxShadow: assets.includes(opt)
-                ? '0 0 16px #3a3aff99'
-                : undefined
+              margin: '0.5rem 0'
             }}
             onClick={() => toggleAsset(opt)}
             type="button"
@@ -79,15 +77,11 @@ const Section3 = ({ onNext, onBack }) => {
         {sectorOptions.map(opt => (
           <NeumorphicButton
             key={opt}
+            isLightMode={isLightMode}
+            className={sectors.includes(opt) ? 'selected' : ''}
             style={{
               width: '100%',
-              margin: '0.5rem 0',
-              background: sectors.includes(opt)
-                ? 'linear-gradient(90deg, #3a3aff 0%, #23234b 100%)'
-                : 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)',
-              boxShadow: sectors.includes(opt)
-                ? '0 0 16px #3a3aff99'
-                : undefined
+              margin: '0.5rem 0'
             }}
             onClick={() => toggleSector(opt)}
             type="button"
@@ -96,11 +90,12 @@ const Section3 = ({ onNext, onBack }) => {
           </NeumorphicButton>
         ))}
         <NeumorphicInput
+          isLightMode={isLightMode}
           type="text"
           placeholder="Other sector..."
           value={otherSector}
           onChange={e => setOtherSector(e.target.value)}
-          style={{ width: '100%', marginTop: '1rem', color: '#fff', background: '#23234b' }}
+          style={{ width: '100%', marginTop: '1rem' }}
         />
       </div>
       <div style={{ width: '100%', marginBottom: '2rem' }}>
@@ -108,18 +103,20 @@ const Section3 = ({ onNext, onBack }) => {
           8. Are there any industries or companies you want to avoid?
         </div>
         <NeumorphicInput
+          isLightMode={isLightMode}
           type="text"
           placeholder="e.g., weapons, tobacco, fossil fuels"
           value={avoid}
           onChange={e => setAvoid(e.target.value)}
-          style={{ width: '100%', color: '#fff', background: '#23234b' }}
+          style={{ width: '100%' }}
         />
       </div>
       <div style={{ display: 'flex', width: '100%', gap: '1rem', marginTop: '2rem' }}>
-        <NeumorphicButton onClick={onBack} style={{ flex: 1, background: 'linear-gradient(90deg, #23234b 0%, #3a3aff 100%)' }}>
+        <NeumorphicButton isLightMode={isLightMode} onClick={onBack} style={{ flex: 1 }}>
           Back
         </NeumorphicButton>
         <NeumorphicButton
+          isLightMode={isLightMode}
           onClick={handleNext}
           style={{ flex: 1 }}
           disabled={assets.length === 0}
